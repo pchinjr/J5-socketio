@@ -1,0 +1,54 @@
+<html>
+    <head>
+      <title>Johnny Five Electric Slide</title>
+      <style>
+      body {
+        background: grey;
+      }
+      </style>
+    </head>
+<body>
+    <h1>Time to Dance!</h1> 
+    <input type="range" min="0" max="180" id="slider">
+    <button id="servoSweep"> Start </button>
+    <button id="servoStop"> Stop </button>
+    <button id="servo90"> 90 </button>
+
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script> -->
+<script src="scripts/socket.io.slim.js"></script>
+<script src="scripts/jquery.js"></script>
+
+<script>
+var socket = io.connect('/');
+
+socket.on('connect', function(data) {
+  socket.emit('join');
+});
+
+$('#servoSweep').on('click', function(){
+  console.log('start servo sweep');
+  socket.emit('servo:sweep');
+});
+
+$('#servoStop').on('click', function(){
+  console.log('stop servo sweep');
+  socket.emit('servo:stop');
+});
+
+$('#servo90').on('click', function(){
+  console.log('set to 90');
+  socket.emit('servo:90');
+});
+
+$('#slider').change(function(){
+  console.log(this.value);
+  socket.emit('servo:angle', this.value);
+});
+
+
+</script>
+</body>
+
+
+</html>
